@@ -44,11 +44,11 @@ services:
       default:
         ipv4_address: [DATABASE_IP_HERE]
     healthcheck:
-    test: mariadb-admin ping -h 127.0.0.1 -u $$MARIADB_USER --password=$$MARIADB_PASSWORD
-    start_period: 5s
-    interval: 5s
-    timeout: 5s
-    retries: 5
+      test: mariadb-admin ping -h 127.0.0.1 -u $$MARIADB_USER --password=$$MARIADB_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
   default:
