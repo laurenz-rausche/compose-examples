@@ -6,9 +6,9 @@ database:
     com.centurylinklabs.watchtower.enable: true
   environment:
     MARIADB_RANDOM_ROOT_PASSWORD: true
-    MARIADB_DATABASE: ""
-    MARIADB_USER: ""
-    MARIADB_PASSWORD: ""
+    MARIADB_DATABASE: "[DATABASE_NAME_HERE]"
+    MARIADB_USER: "[DATABASE_USER_HERE]"
+    MARIADB_PASSWORD: "[DATABASE_PASSWORD_HERE]"
   volumes:
     - /opt/[PROJECT_NAME_HERE]/data/database/data:/var/lib/mysql
     - /etc/timezone:/etc/timezone:ro
