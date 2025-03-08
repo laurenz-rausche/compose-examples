@@ -1,0 +1,62 @@
+services:
+  app:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    ports:
+      - 80:80
+      - 443:443
+      - 81 # remove when proxied
+    environment:
+      DB_MYSQL_HOST: "[DATABASE_HOST_HERE]"
+      DB_MYSQL_NAME: "[DATABASE_NAME_HERE]"
+      DB_MYSQL_USER: "[DATABASE_USER_HERE]"
+      DB_MYSQL_PASSWORD: "[DATABASE_PASSWORD_HERE]"
+    volumes:
+      - /opt/[PROJECT_NAME_HERE]/data/app/data:/data
+      - /opt/[PROJECT_NAME_HERE]/data/app/letsencrypt:/etc/letsencrypt
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      default:
+        ipv4_address: [APP_IP_HERE]
+      proxy_connect:
+        ipv4_address: [PROXY_IP_HERE]
+  database:
+    image: mariadb:latest
+    restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+      MARIADB_DATABASE: "[DATABASE_NAME_HERE]"
+      MARIADB_USER: "[DATABASE_USER_HERE]"
+      MARIADB_PASSWORD: "[DATABASE_PASSWORD_HERE]"
+    volumes:
+      - /opt/[PROJECT_NAME_HERE]/data/database/data:/var/lib/mysql
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      default:
+        ipv4_address: [DATABASE_IP_HERE]
+    healthcheck:
+    test: mariadb-admin ping -h 127.0.0.1 -u $$MARIADB_USER --password=$$MARIADB_PASSWORD
+    start_period: 5s
+    interval: 5s
+    timeout: 5s
+    retries: 5
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: [APP_SUBNET_HERE]
+          gateway: [APP_GATEWAY_HERE]
+  proxy_connect:
+    name: proxy_connect
+    external: true
