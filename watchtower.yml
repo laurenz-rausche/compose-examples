@@ -1,6 +1,6 @@
 services:
   app:
-    image: containrrr/watchtower:latest
+    image: nickfedor/watchtower:latest
     restart: unless-stopped
     environment:
       WATCHTOWER_CLEANUP: true
