@@ -1,0 +1,32 @@
+services:
+  app:
+    image: mongo-express:latest
+    restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: "[ME_USER_HERE]"
+      ME_CONFIG_BASICAUTH_PASSWORD: "[ME_PASSWORD_HERE]"
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "[DATABASE_USER_HERE]"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "[DATABASE_PASSWORD_HERE]"
+      ME_CONFIG_MONGODB_SERVER: "[DATABASE_IP_HERE]"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      default:
+        ipv4_address: [APP_IP_HERE]
+      proxy_connect:
+        ipv4_address: [PROXY_IP_HERE]
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: [APP_SUBNET_HERE]
+          gateway: [APP_GATEWAY_HERE]
+  proxy_connect:
+    name: proxy_connect
+    external: true
