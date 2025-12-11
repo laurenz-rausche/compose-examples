@@ -1,0 +1,32 @@
+services:
+  database:
+    image: mongo:latest
+    restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "[DATABASE_USER_HERE]"
+      MONGO_INITDB_ROOT_PASSWORD: "[DATABASE_PASSWORD_HERE]"
+    volumes:
+      - /opt/[PROJECT_NAME_HERE]/data/database/data:/data/db
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      default:
+        ipv4_address: [DATABASE_IP_HERE]
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh 127.0.0.1:27017/admin --quiet
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: [DATABASE_SUBNET_HERE]
+          gateway: [DATABASE_GATEWAY_HERE]
