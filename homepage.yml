@@ -5,7 +5,7 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: true
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: [ALLOWED_HOSTS_HERE]
+      HOMEPAGE_ALLOWED_HOSTS: "[ALLOWED_HOSTS_HERE]"
     volumes:
       - /opt/[PROJECT_NAME_HERE]/data/app/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
