@@ -5,12 +5,10 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: true
     environment:
-      ME_CONFIG_BASICAUTH_USERNAME: "[ME_USER_HERE]"
-      ME_CONFIG_BASICAUTH_PASSWORD: "[ME_PASSWORD_HERE]"
+      ME_CONFIG_MONGODB_URL: "[DATABASE_URL_HERE]"
+      ME_CONFIG_BASICAUTH_USERNAME: "[DATABASE_USER_HERE]"
+      ME_CONFIG_BASICAUTH_PASSWORD: "[DATABASE_PASSWORD_HERE]"
       ME_CONFIG_MONGODB_ENABLE_ADMIN: true
-      ME_CONFIG_MONGODB_ADMINUSERNAME: "[DATABASE_USER_HERE]"
-      ME_CONFIG_MONGODB_ADMINPASSWORD: "[DATABASE_PASSWORD_HERE]"
-      ME_CONFIG_MONGODB_SERVER: "[DATABASE_IP_HERE]"
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
