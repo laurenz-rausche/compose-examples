@@ -1,0 +1,30 @@
+services:
+  database:
+    image: redis:latest
+    restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass [DATABASE_PASSWORD_HERE]
+    volumes:
+      - /opt/[PROJECT_NAME_HERE]/data/redis/data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      default:
+        ipv4_address: [DATABASE_IP_HERE]
+    healthcheck:
+      test: redis-cli -a [DATABASE_PASSWORD_HERE] ping
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: [DATABASE_SUBNET_HERE]
+          gateway: [DATABASE_GATEWAY_HERE]
